@@ -6,3 +6,8 @@ export interface Todo {
 export interface Meta {
   totalCount: number;
 }
+
+export interface Hero {
+  id: string;
+  name: string;
+}

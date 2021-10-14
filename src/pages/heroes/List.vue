@@ -1,54 +1,58 @@
 <template>
   <div class="title">My Heroes</div>
   <div class="list">
-    <div class="hero-wrapper">
-      <div class="heroId">11</div>
-      <div class="heroName">Mr. Nice</div>
-    </div>
-    <div class="hero-wrapper">
-      <div class="heroId">12</div>
-      <div class="heroName">Narco</div>
-    </div>
-    <div class="hero-wrapper">
-      <div class="heroId">13</div>
-      <div class="heroName">Bombasto</div>
-    </div>
-    <div class="hero-wrapper">
-      <div class="heroId">14</div>
-      <div class="heroName">Celeritas</div>
-    </div>
-    <div class="hero-wrapper">
-      <div class="heroId">15</div>
-      <div class="heroName">Magneta</div>
-    </div>
-    <div class="hero-wrapper">
-      <div class="heroId">16</div>
-      <div class="heroName">Rubberman</div>
-    </div>
-    <div class="hero-wrapper">
-      <div class="heroId">17</div>
-      <div class="heroName">Dynama</div>
-    </div>
-    <div class="hero-wrapper">
-      <div class="heroId">18</div>
-      <div class="heroName">Dr IQ</div>
-    </div>
-    <div class="hero-wrapper">
-      <div class="heroId">19</div>
-      <div class="heroName">Magma</div>
-    </div>
-    <div class="hero-wrapper">
-      <div class="heroId">20</div>
-      <div class="heroName">Tornado</div>
-    </div>
+    <ListItem
+      v-for="(hero, index) in heroes"
+      :key="index"
+      :preText="hero.id"
+      :text="hero.name"
+      @click="onHeroClick(hero)"
+    />
+  </div>
+
+  <div v-if="selectedHero.name">
+    <div class="title">{{ selectedHero.name.toUpperCase() }} is my hero</div>
+    <Button :text="'View Details'" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref, Ref } from 'vue';
+import ListItem from 'components/ListItem.vue';
+import Button from 'components/Button.vue';
+import { Hero } from 'src/components/models';
 
 export default defineComponent({
   name: 'HeroesListPage',
+  components: {
+    ListItem,
+    Button,
+  },
+  setup() {
+    const selectedHero: Ref<Hero> = ref(<Hero>{});
+    const heroes = ref([
+      { id: '11', name: 'Mr. Nice' },
+      { id: '12', name: 'Narco' },
+      { id: '13', name: 'Bombasto' },
+      { id: '14', name: 'Celeritas' },
+      { id: '15', name: 'Magneta' },
+      { id: '16', name: 'Rubberman' },
+      { id: '17', name: 'Dynama' },
+      { id: '18', name: 'Dr IQ' },
+      { id: '19', name: 'Magma' },
+      { id: '20', name: 'Tornado' },
+    ]);
+
+    function onHeroClick(hero: Hero) {
+      selectedHero.value = hero;
+    }
+
+    return {
+      heroes,
+      selectedHero,
+      onHeroClick,
+    };
+  },
 });
 </script>
 
@@ -63,39 +67,5 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   gap: 8px;
-}
-
-.hero-wrapper {
-  display: flex;
-  width: 150px;
-  background-color: darken(#eeeeee, 10%);
-  background-color: #eeeeee;
-  cursor: pointer;
-  color: #8d8d8d;
-  line-height: 1.05em;
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
-
-  &:hover {
-    background-color: #cfd8dc;
-    color: white;
-    margin-left: 4px;
-  }
-}
-.heroId {
-  background-color: #5f7d8c;
-  color: white;
-  border-top-left-radius: 6px;
-  border-bottom-left-radius: 6px;
-  padding: 8px;
-  font-size: 12px;
-  font-weight: 600;
-}
-.heroName {
-  width: 100%;
-  padding: 8px;
-  padding-left: 12px;
-  font-weight: 600;
-  font-size: 1.05em;
 }
 </style>
