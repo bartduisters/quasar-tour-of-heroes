@@ -22,21 +22,33 @@ export default defineComponent({
   color: grey;
   display: flex;
   justify-content: center;
+  font-weight: 600;
 }
 
 ul {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 2em;
+  flex-wrap: wrap;
+  padding: 0;
 }
 
 li {
-  background-color: deeppink;
+  background-color: #5f7d8c;
   list-style: none;
   height: 120px;
-  width: 120px;
+  width: 150px;
   color: white;
   display: flex;
   justify-content: center;
   align-items: center;
+  font-weight: 600;
+  font-size: large;
+
+  &:hover {
+    background-color: #eeeeee;
+    color: #5f7d8c;
+    cursor: pointer;
+  }
 }
 </style>

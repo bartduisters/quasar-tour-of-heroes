@@ -55,6 +55,8 @@ export default defineComponent({
 <style lang="scss" scoped>
 .title {
   font-size: 24px;
+  margin-top: 1em;
+  margin-bottom: 1em;
 }
 
 .list {
@@ -66,20 +68,34 @@ export default defineComponent({
 .hero-wrapper {
   display: flex;
   width: 150px;
+  background-color: darken(#eeeeee, 10%);
+  background-color: #eeeeee;
+  cursor: pointer;
+  color: #8d8d8d;
+  line-height: 1.05em;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+
+  &:hover {
+    background-color: #cfd8dc;
+    color: white;
+    margin-left: 4px;
+  }
 }
 .heroId {
-  background-color: darkslategray;
+  background-color: #5f7d8c;
   color: white;
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-  padding: 4px;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  padding: 8px;
+  font-size: 12px;
+  font-weight: 600;
 }
 .heroName {
-  background-color: aliceblue;
-  color: darkgray;
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
   width: 100%;
-  padding: 4px;
+  padding: 8px;
+  padding-left: 12px;
+  font-weight: 600;
+  font-size: 1.05em;
 }
 </style>
