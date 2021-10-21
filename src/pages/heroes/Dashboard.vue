@@ -5,6 +5,7 @@
       v-for="(hero, index) in topHeroes"
       :key="index"
       :text="hero.name"
+      @click="onHeroClick(hero.id)"
     />
   </ul>
 </template>
@@ -12,6 +13,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import SquareItem from 'components/SquareItem.vue';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'HeroesDashboardPage',
@@ -19,6 +21,7 @@ export default defineComponent({
     SquareItem,
   },
   setup() {
+    const router = useRouter();
     const topHeroes = [
       { id: '11', name: 'Mr. Nice' },
       { id: '12', name: 'Narco' },
@@ -32,8 +35,13 @@ export default defineComponent({
       { id: '20', name: 'Tornado' },
     ];
 
+    function onHeroClick(id: string) {
+      router.push({ path: `/heroes/${id}` }).catch(console.error);
+    }
+
     return {
       topHeroes: topHeroes.splice(0, 4),
+      onHeroClick,
     };
   },
 });

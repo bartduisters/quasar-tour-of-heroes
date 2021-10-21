@@ -12,7 +12,7 @@
 
   <div v-if="selectedHero.name">
     <div class="title">{{ selectedHero.name.toUpperCase() }} is my hero</div>
-    <Button :text="'View Details'" />
+    <Button @click="onViewDetailsClick()" :text="'View Details'" />
   </div>
 </template>
 
@@ -21,6 +21,7 @@ import { defineComponent, ref, Ref } from 'vue';
 import ListItem from 'components/ListItem.vue';
 import Button from 'components/Button.vue';
 import { Hero } from 'src/components/models';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'HeroesListPage',
@@ -29,6 +30,7 @@ export default defineComponent({
     Button,
   },
   setup() {
+    const router = useRouter();
     const selectedHero: Ref<Hero> = ref(<Hero>{});
     const heroes = ref([
       { id: '11', name: 'Mr. Nice' },
@@ -47,10 +49,17 @@ export default defineComponent({
       selectedHero.value = hero;
     }
 
+    function onViewDetailsClick() {
+      router
+        .push({ path: `/heroes/${selectedHero.value.id}` })
+        .catch(console.error);
+    }
+
     return {
       heroes,
       selectedHero,
       onHeroClick,
+      onViewDetailsClick,
     };
   },
 });
