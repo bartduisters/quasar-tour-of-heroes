@@ -14,6 +14,7 @@
 import { defineComponent } from 'vue';
 import SquareItem from 'components/SquareItem.vue';
 import { useRouter } from 'vue-router';
+import { useHeroes } from 'src/services/heroes.service';
 
 export default defineComponent({
   name: 'HeroesDashboardPage',
@@ -22,25 +23,14 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
-    const topHeroes = [
-      { id: '11', name: 'Mr. Nice' },
-      { id: '12', name: 'Narco' },
-      { id: '13', name: 'Bombasto' },
-      { id: '14', name: 'Celeritas' },
-      { id: '15', name: 'Magneta' },
-      { id: '16', name: 'Rubberman' },
-      { id: '17', name: 'Dynama' },
-      { id: '18', name: 'Dr IQ' },
-      { id: '19', name: 'Magma' },
-      { id: '20', name: 'Tornado' },
-    ];
+    const { getTopHeroes } = useHeroes();
 
     function onHeroClick(id: string) {
       router.push({ path: `/heroes/${id}` }).catch(console.error);
     }
 
     return {
-      topHeroes: topHeroes.splice(0, 4),
+      topHeroes: getTopHeroes(4),
       onHeroClick,
     };
   },

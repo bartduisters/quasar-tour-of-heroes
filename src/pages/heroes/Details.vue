@@ -15,6 +15,7 @@ import { Hero } from 'src/components/models';
 import { defineComponent, Ref, ref } from 'vue';
 import Button from 'src/components/Button.vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useHeroes } from 'src/services/heroes.service';
 
 export default defineComponent({
   components: {
@@ -24,22 +25,11 @@ export default defineComponent({
     const route = useRoute();
     const router = useRouter();
     const { id } = route.params;
+    const { heroes } = useHeroes();
 
     const selectedHero: Ref<Hero> = ref(<Hero>{});
-    const heroes = [
-      { id: '11', name: 'Mr. Nice' },
-      { id: '12', name: 'Narco' },
-      { id: '13', name: 'Bombasto' },
-      { id: '14', name: 'Celeritas' },
-      { id: '15', name: 'Magneta' },
-      { id: '16', name: 'Rubberman' },
-      { id: '17', name: 'Dynama' },
-      { id: '18', name: 'Dr IQ' },
-      { id: '19', name: 'Magma' },
-      { id: '20', name: 'Tornado' },
-    ];
 
-    const filteredHeroes = heroes.filter((hero) => hero.id === id);
+    const filteredHeroes = heroes.value.filter((hero) => hero.id === id);
     selectedHero.value = filteredHeroes[0];
 
     function onBackClick() {

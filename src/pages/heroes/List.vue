@@ -1,5 +1,12 @@
 <template>
   <div class="title">My Heroes</div>
+
+  <Button
+    class="addHeroButton"
+    @click="addHero('Samson')"
+    :text="'Add new hero'"
+  />
+
   <div class="list">
     <ListItem
       v-for="(hero, index) in heroes"
@@ -22,6 +29,7 @@ import ListItem from 'components/ListItem.vue';
 import Button from 'components/Button.vue';
 import { Hero } from 'src/components/models';
 import { useRouter } from 'vue-router';
+import { useHeroes } from 'src/services/heroes.service';
 
 export default defineComponent({
   name: 'HeroesListPage',
@@ -32,18 +40,7 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const selectedHero: Ref<Hero> = ref(<Hero>{});
-    const heroes = ref([
-      { id: '11', name: 'Mr. Nice' },
-      { id: '12', name: 'Narco' },
-      { id: '13', name: 'Bombasto' },
-      { id: '14', name: 'Celeritas' },
-      { id: '15', name: 'Magneta' },
-      { id: '16', name: 'Rubberman' },
-      { id: '17', name: 'Dynama' },
-      { id: '18', name: 'Dr IQ' },
-      { id: '19', name: 'Magma' },
-      { id: '20', name: 'Tornado' },
-    ]);
+    const { heroes, addHero } = useHeroes();
 
     function onHeroClick(hero: Hero) {
       selectedHero.value = hero;
@@ -60,6 +57,7 @@ export default defineComponent({
       selectedHero,
       onHeroClick,
       onViewDetailsClick,
+      addHero,
     };
   },
 });
@@ -76,5 +74,9 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.addHeroButton {
+  margin-bottom: 1em;
 }
 </style>
