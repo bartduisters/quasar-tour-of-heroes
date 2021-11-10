@@ -11,3 +11,9 @@ export interface Hero {
   id: string;
   name: string;
 }
+
+export interface User {
+  _id: string;
+  email: string;
+  password: string;
+}

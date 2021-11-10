@@ -12,6 +12,9 @@ const routes: RouteRecordRaw[] = [
     ],
   },
 
+  { path: '/email', component: () => import('pages/auth/Email.vue') },
+  { path: '/logout', component: () => import('pages/auth/Logout.vue') },
+
   // Always leave this as last one,
   // but you can also remove it
   {
