@@ -1,3 +1,4 @@
+import { LocalStorage } from 'quasar';
 import { Hero, HeroBackendResponse } from 'src/components/models';
 import { ref, Ref } from 'vue';
 
@@ -41,7 +42,8 @@ const useHeroes = () => {
     const getHeroes = async () => {
         // Implement functionality to get all heroes
         const headers = new Headers();
-        headers.append('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6ImFjY2VzcyJ9.eyJpYXQiOjE2MzcwOTM1NjYsImV4cCI6MTYzNzE3OTk2NiwiYXVkIjoiaHR0cHM6Ly9jb2RlLWNvYWNoaW5nLmRldiIsImlzcyI6IkNvZGUgQ29hY2hpbmciLCJzdWIiOiI2MThkOWI3ZDI3NjNjYjRjMzU1MmZiOGYiLCJqdGkiOiIxNDFjMzhlMy00NzUzLTQ3NGEtOWQ3MS03ZjQ3ZWI5MzFlZWYifQ.TDRawDjJyLe56MimaOndXyih2MdOknX7T_GVxkxaQZE');
+        const jwt = <string>LocalStorage.getItem('jwt');
+        headers.append('Authorization', `Bearer ${jwt}`);
         headers.append('Content-Type', 'application/json');
 
         const requestOptions = {
@@ -59,7 +61,8 @@ const useHeroes = () => {
     const createHero = (hero: Hero) => {
         // Implement functionality to create one hero
         const headers = new Headers();
-        headers.append('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6ImFjY2VzcyJ9.eyJpYXQiOjE2MzcwOTM1NjYsImV4cCI6MTYzNzE3OTk2NiwiYXVkIjoiaHR0cHM6Ly9jb2RlLWNvYWNoaW5nLmRldiIsImlzcyI6IkNvZGUgQ29hY2hpbmciLCJzdWIiOiI2MThkOWI3ZDI3NjNjYjRjMzU1MmZiOGYiLCJqdGkiOiIxNDFjMzhlMy00NzUzLTQ3NGEtOWQ3MS03ZjQ3ZWI5MzFlZWYifQ.TDRawDjJyLe56MimaOndXyih2MdOknX7T_GVxkxaQZE');
+        const jwt = <string>LocalStorage.getItem('jwt');
+        headers.append('Authorization', `Bearer ${jwt}`);
         headers.append('Content-Type', 'application/json');
 
         const body = JSON.stringify(hero);
