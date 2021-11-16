@@ -24,12 +24,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, Ref } from 'vue';
+import { defineComponent, ref, Ref, onBeforeMount } from 'vue';
 import ListItem from 'components/ListItem.vue';
 import Button from 'components/Button.vue';
 import { Hero } from 'src/components/models';
 import { useRouter } from 'vue-router';
-import { useHeroes } from 'src/services/heroes.service';
+import { useBackend } from 'src/services/backend.service';
 
 export default defineComponent({
   name: 'HeroesListPage',
@@ -38,18 +38,24 @@ export default defineComponent({
     Button,
   },
   setup() {
+    const { getHeroes, heroes } = useBackend();
     const router = useRouter();
     const selectedHero: Ref<Hero> = ref(<Hero>{});
-    const { heroes, addHero } = useHeroes();
+
+    onBeforeMount(async () => {
+      await getHeroes();
+    });
+
+    function addHero() {
+      void router.push({ path: '/heroes/create' });
+    }
 
     function onHeroClick(hero: Hero) {
       selectedHero.value = hero;
     }
 
     function onViewDetailsClick() {
-      router
-        .push({ path: `/heroes/${selectedHero.value.id}` })
-        .catch(console.error);
+      void router.push({ path: `/heroes/${selectedHero.value.id}` });
     }
 
     return {

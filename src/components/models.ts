@@ -17,3 +17,10 @@ export interface User {
   email: string;
   password: string;
 }
+
+export interface HeroBackendResponse {
+  total: number,
+  limit: number,
+  skip: number,
+  data: Array<Hero>
+}

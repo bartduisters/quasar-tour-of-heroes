@@ -1,10 +1,11 @@
-import { Hero } from 'src/components/models';
+import { Hero, HeroBackendResponse } from 'src/components/models';
+import { ref, Ref } from 'vue';
 
 const useAuthentication = () => {
     const authenticate = (email: string, password: string) => {
         const data = { strategy: 'local', email, password };
 
-        return fetch('http://localhost:3030/authentication', {
+        return fetch('https://api.code-coaching.dev/authentication', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -16,7 +17,7 @@ const useAuthentication = () => {
     const authenticateJwt = (jwt: string) => {
         const data = { strategy: 'jwt', accessToken: jwt };
 
-        return fetch('http://localhost:3030/authentication', {
+        return fetch('https://api.code-coaching.dev/authentication', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -29,6 +30,7 @@ const useAuthentication = () => {
 };
 
 const useHeroes = () => {
+    const heroes: Ref<Array<Hero>> = ref([]);
 
     /*
     * note: the backend model has both `_id` and `id` as a property
@@ -36,13 +38,42 @@ const useHeroes = () => {
     * _id is the id in the database, this is the property that can be used to update and delete a hero
     */
 
-    const getHeroes = () => {
+    const getHeroes = async () => {
         // Implement functionality to get all heroes
+        const headers = new Headers();
+        headers.append('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6ImFjY2VzcyJ9.eyJpYXQiOjE2MzcwOTM1NjYsImV4cCI6MTYzNzE3OTk2NiwiYXVkIjoiaHR0cHM6Ly9jb2RlLWNvYWNoaW5nLmRldiIsImlzcyI6IkNvZGUgQ29hY2hpbmciLCJzdWIiOiI2MThkOWI3ZDI3NjNjYjRjMzU1MmZiOGYiLCJqdGkiOiIxNDFjMzhlMy00NzUzLTQ3NGEtOWQ3MS03ZjQ3ZWI5MzFlZWYifQ.TDRawDjJyLe56MimaOndXyih2MdOknX7T_GVxkxaQZE');
+        headers.append('Content-Type', 'application/json');
+
+        const requestOptions = {
+            method: 'GET',
+            headers
+        };
+
+        const result = await fetch('https://api.code-coaching.dev/heroes/', requestOptions);
+        const jsonResult = await <Promise<HeroBackendResponse>>result.json();
+
+        console.log(jsonResult.data);
+        heroes.value = jsonResult.data;
     }
 
     const createHero = (hero: Hero) => {
         // Implement functionality to create one hero
-        console.log(hero);
+        const headers = new Headers();
+        headers.append('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6ImFjY2VzcyJ9.eyJpYXQiOjE2MzcwOTM1NjYsImV4cCI6MTYzNzE3OTk2NiwiYXVkIjoiaHR0cHM6Ly9jb2RlLWNvYWNoaW5nLmRldiIsImlzcyI6IkNvZGUgQ29hY2hpbmciLCJzdWIiOiI2MThkOWI3ZDI3NjNjYjRjMzU1MmZiOGYiLCJqdGkiOiIxNDFjMzhlMy00NzUzLTQ3NGEtOWQ3MS03ZjQ3ZWI5MzFlZWYifQ.TDRawDjJyLe56MimaOndXyih2MdOknX7T_GVxkxaQZE');
+        headers.append('Content-Type', 'application/json');
+
+        const body = JSON.stringify(hero);
+
+        const requestOptions = {
+            method: 'POST',
+            headers,
+            body
+        };
+
+        fetch('https://api.code-coaching.dev/heroes/', requestOptions)
+            .then(response => response.json())
+            .then((result: Hero) => alert(`${result.name} is aangemaakt!`))
+            .catch(error => alert(error));
     }
 
     const updateHero = (hero: Partial<Hero>) => {
@@ -55,7 +86,7 @@ const useHeroes = () => {
         console.log(id);
     }
 
-    return { getHeroes, createHero, updateHero, deleteHero };
+    return { heroes, getHeroes, createHero, updateHero, deleteHero };
 }
 
 const useAuthenticationSingleton = useAuthentication();
