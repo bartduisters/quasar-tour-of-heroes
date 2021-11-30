@@ -8,6 +8,7 @@ export interface Meta {
 }
 
 export interface Hero {
+  _id?: string;
   id: string;
   name: string;
 }

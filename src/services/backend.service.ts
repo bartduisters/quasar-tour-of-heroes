@@ -54,7 +54,6 @@ const useHeroes = () => {
         const result = await fetch('https://api.code-coaching.dev/heroes/', requestOptions);
         const jsonResult = await <Promise<HeroBackendResponse>>result.json();
 
-        console.log(jsonResult.data);
         heroes.value = jsonResult.data;
     }
 
@@ -80,15 +79,52 @@ const useHeroes = () => {
     }
 
     const updateHero = (hero: Partial<Hero>) => {
+        console.log('in updateHero')
         // Implement functionality to update one hero, use PATCH, not PUT
-        console.log(hero);
+        const headers = new Headers();
+        const jwt = <string>LocalStorage.getItem('jwt');
+        headers.append('Authorization', `Bearer ${jwt}`);
+        headers.append('Content-Type', 'application/json');
+
+        const body = JSON.stringify({
+            'name': hero.name
+        });
+
+        const requestOptions = {
+            method: 'PATCH',
+            headers,
+            body
+        };
+
+        if (hero._id) {
+            fetch(`https://api.code-coaching.dev/heroes/${hero._id}`, requestOptions)
+                .then(response => response.json())
+                .then(result => console.log(result))
+                .catch(error => console.log('error', error));
+        }
     }
 
-    const deleteHero = (id: number) => {
+    const deleteHero = (id: string) => {
         // Implement functionality to delete one hero
-        console.log(id);
+        const headers = new Headers();
+        const jwt = <string>LocalStorage.getItem('jwt');
+        headers.append('Authorization', `Bearer ${jwt}`);
+
+        const requestOptions = {
+            method: 'DELETE',
+            headers,
+        };
+
+        fetch(`https://api.code-coaching.dev/heroes/${id}`, requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                void getHeroes()
+                console.log(result)
+            })
+            .catch(error => console.log('error', error));
     }
 
+    void getHeroes();
     return { heroes, getHeroes, createHero, updateHero, deleteHero };
 }
 

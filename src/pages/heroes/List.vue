@@ -3,7 +3,7 @@
 
   <Button
     class="addHeroButton"
-    @click="addHero('Samson')"
+    @click="addHero()"
     :text="'Add new hero'"
   />
 
@@ -14,6 +14,7 @@
       :preText="hero.id"
       :text="hero.name"
       @click="onHeroClick(hero)"
+      @delete="onDeleteHero(hero)"
     />
   </div>
 
@@ -38,7 +39,7 @@ export default defineComponent({
     Button,
   },
   setup() {
-    const { getHeroes, heroes } = useBackend();
+    const { getHeroes, heroes, deleteHero } = useBackend();
     const router = useRouter();
     const selectedHero: Ref<Hero> = ref(<Hero>{});
 
@@ -58,12 +59,20 @@ export default defineComponent({
       void router.push({ path: `/heroes/${selectedHero.value.id}` });
     }
 
+    const onDeleteHero = (hero: Hero) => {
+      if (hero._id) {
+        deleteHero(hero._id);
+      }
+    }
+
+
     return {
       heroes,
       selectedHero,
       onHeroClick,
       onViewDetailsClick,
       addHero,
+      onDeleteHero
     };
   },
 });

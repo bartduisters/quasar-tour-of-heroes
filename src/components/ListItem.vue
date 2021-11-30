@@ -1,7 +1,10 @@
 <template>
-  <div class="wrapper">
-    <div class="firstText">{{ preText }}</div>
-    <div class="secondText">{{ text }}</div>
+  <div class="container">
+    <div class="wrapper">
+      <div class="firstText">{{ preText }}</div>
+      <div class="secondText">{{ text }}</div>
+      <div @click.prevent.stop="onDeleteClick()" class="deleteButton">x</div>
+    </div>
   </div>
 </template>
 
@@ -19,10 +22,23 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ['delete'],
+  setup(props, context) {
+    const onDeleteClick = () => {
+      context.emit('delete');
+    };
+
+    return {
+      onDeleteClick,
+    };
+  },
 });
 </script>
 
 <style lang="scss" scoped>
+.container {
+  display: flex;
+}
 .wrapper {
   display: flex;
   width: 150px;
@@ -31,8 +47,6 @@ export default defineComponent({
   cursor: pointer;
   color: #8d8d8d;
   line-height: 1.05em;
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
 
   &:hover {
     background-color: #cfd8dc;
@@ -55,5 +69,14 @@ export default defineComponent({
   padding-left: 12px;
   font-weight: 600;
   font-size: 1.05em;
+}
+.deleteButton {
+  background-color: #e41717;
+  color: white;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  padding: 8px;
+  font-size: 12px;
+  font-weight: 600;
 }
 </style>
